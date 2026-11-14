@@ -1,0 +1,51 @@
+name: tzu-native
+
+on:
+  push:
+    paths:
+      - 'tzu/**'
+      - '.github/workflows/tzu-native.yml'
+  workflow_dispatch:
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm-community'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install JBang
+        run: |
+          curl -Ls https://sh.jbang.dev | bash -s - version
+          echo "$HOME/.jbang/bin" >> "$GITHUB_PATH"
+
+      - name: Build native executables
+        run: tzu/build-native.sh
+
+      - name: Smoke test
+        env:
+          TZU_WIDTH: '120'
+          NO_COLOR: '1'
+        run: |
+          cd tzu/build
+          ./tz-now --version
+          ./tz-now -z Tokyo,London,Lima
+          ./tz-meet tomorrow -z Tokyo,London,Lima
+          ./tz-find tokyo --no-map
+          ./tz-find Australia --no-map --offline
+          ./tz-map --rules
+          ./tz-holidays 2026-12 -c US,DE,JP
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tzu-${{ runner.os }}-${{ runner.arch }}
+          path: tzu/build/tz-*

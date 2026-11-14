@@ -4,6 +4,26 @@
     "mvnrun": {
       "script-ref": "mvnrun.java",
       "description": "Run standalone Maven plugin goals without installing Maven"
+    },
+    "tz-now": {
+      "script-ref": "tzu/TzNow.java",
+      "description": "World clock: current time here and in a configurable group of timezones (tzu)"
+    },
+    "tz-meet": {
+      "script-ref": "tzu/TzMeet.java",
+      "description": "Meeting planner: a day's timetable across your timezones with the best slots (tzu)"
+    },
+    "tz-holidays": {
+      "script-ref": "tzu/TzHolidays.java",
+      "description": "Public holidays across your timezones' countries for a week, month, quarter or year (tzu)"
+    },
+    "tz-find": {
+      "script-ref": "tzu/TzFind.java",
+      "description": "Find the timezone of a city, country, abbreviation or UTC offset (tzu)"
+    },
+    "tz-map": {
+      "script-ref": "tzu/TzMap.java",
+      "description": "World timezone map with day/night and daylight saving time rules (tzu)"
     }
   }
 }

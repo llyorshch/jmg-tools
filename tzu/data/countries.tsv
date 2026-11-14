@@ -1,0 +1,248 @@
+# Countries (GeoNames countryInfo, CC-BY 4.0) with IANA zone.tab zones
+AD	Andorra	EU	Andorra la Vella	Europe/Andorra
+AE	United Arab Emirates	AS	Abu Dhabi	Asia/Dubai
+AF	Afghanistan	AS	Kabul	Asia/Kabul
+AG	Antigua and Barbuda	NA	St. John's	America/Antigua
+AI	Anguilla	NA	The Valley	America/Anguilla
+AL	Albania	EU	Tirana	Europe/Tirane
+AM	Armenia	AS	Yerevan	Asia/Yerevan
+AO	Angola	AF	Luanda	Africa/Luanda
+AQ	Antarctica	AN		Antarctica/McMurdo,Antarctica/Casey,Antarctica/Davis,Antarctica/DumontDUrville,Antarctica/Mawson,Antarctica/Palmer,Antarctica/Rothera,Antarctica/Syowa,Antarctica/Troll,Antarctica/Vostok
+AR	Argentina	SA	Buenos Aires	America/Argentina/Buenos_Aires,America/Argentina/Cordoba,America/Argentina/Salta,America/Argentina/Jujuy,America/Argentina/Tucuman,America/Argentina/Catamarca,America/Argentina/La_Rioja,America/Argentina/San_Juan,America/Argentina/Mendoza,America/Argentina/San_Luis,America/Argentina/Rio_Gallegos,America/Argentina/Ushuaia
+AS	American Samoa	OC	Pago Pago	Pacific/Pago_Pago
+AT	Austria	EU	Vienna	Europe/Vienna
+AU	Australia	OC	Canberra	Australia/Lord_Howe,Antarctica/Macquarie,Australia/Hobart,Australia/Melbourne,Australia/Sydney,Australia/Broken_Hill,Australia/Brisbane,Australia/Lindeman,Australia/Adelaide,Australia/Darwin,Australia/Perth,Australia/Eucla
+AW	Aruba	NA	Oranjestad	America/Aruba
+AX	Aland Islands	EU	Mariehamn	Europe/Mariehamn
+AZ	Azerbaijan	AS	Baku	Asia/Baku
+BA	Bosnia and Herzegovina	EU	Sarajevo	Europe/Sarajevo
+BB	Barbados	NA	Bridgetown	America/Barbados
+BD	Bangladesh	AS	Dhaka	Asia/Dhaka
+BE	Belgium	EU	Brussels	Europe/Brussels
+BF	Burkina Faso	AF	Ouagadougou	Africa/Ouagadougou
+BG	Bulgaria	EU	Sofia	Europe/Sofia
+BH	Bahrain	AS	Manama	Asia/Bahrain
+BI	Burundi	AF	Gitega	Africa/Bujumbura
+BJ	Benin	AF	Porto-Novo	Africa/Porto-Novo
+BL	Saint Barthelemy	NA	Gustavia	America/St_Barthelemy
+BM	Bermuda	NA	Hamilton	Atlantic/Bermuda
+BN	Brunei	AS	Bandar Seri Begawan	Asia/Brunei
+BO	Bolivia	SA	Sucre	America/La_Paz
+BQ	Bonaire, Saint Eustatius and Saba 	NA		America/Kralendijk
+BR	Brazil	SA	Brasilia	America/Noronha,America/Belem,America/Fortaleza,America/Recife,America/Araguaina,America/Maceio,America/Bahia,America/Sao_Paulo,America/Campo_Grande,America/Cuiaba,America/Santarem,America/Porto_Velho,America/Boa_Vista,America/Manaus,America/Eirunepe,America/Rio_Branco
+BS	Bahamas	NA	Nassau	America/Nassau
+BT	Bhutan	AS	Thimphu	Asia/Thimphu
+BW	Botswana	AF	Gaborone	Africa/Gaborone
+BY	Belarus	EU	Minsk	Europe/Minsk
+BZ	Belize	NA	Belmopan	America/Belize
+CA	Canada	NA	Ottawa	America/St_Johns,America/Halifax,America/Glace_Bay,America/Moncton,America/Goose_Bay,America/Blanc-Sablon,America/Toronto,America/Iqaluit,America/Atikokan,America/Winnipeg,America/Resolute,America/Rankin_Inlet,America/Regina,America/Swift_Current,America/Edmonton,America/Cambridge_Bay,America/Inuvik,America/Vancouver,America/Creston,America/Dawson_Creek,America/Fort_Nelson,America/Whitehorse,America/Dawson
+CC	Cocos Islands	AS	West Island	Indian/Cocos
+CD	Democratic Republic of the Congo	AF	Kinshasa	Africa/Kinshasa,Africa/Lubumbashi
+CF	Central African Republic	AF	Bangui	Africa/Bangui
+CG	Republic of the Congo	AF	Brazzaville	Africa/Brazzaville
+CH	Switzerland	EU	Bern	Europe/Zurich
+CI	Ivory Coast	AF	Yamoussoukro	Africa/Abidjan
+CK	Cook Islands	OC	Avarua	Pacific/Rarotonga
+CL	Chile	SA	Santiago	America/Santiago,America/Coyhaique,America/Punta_Arenas,Pacific/Easter
+CM	Cameroon	AF	Yaounde	Africa/Douala
+CN	China	AS	Beijing	Asia/Shanghai,Asia/Urumqi
+CO	Colombia	SA	Bogota	America/Bogota
+CR	Costa Rica	NA	San Jose	America/Costa_Rica
+CU	Cuba	NA	Havana	America/Havana
+CV	Cabo Verde	AF	Praia	Atlantic/Cape_Verde
+CW	Curacao	NA	 Willemstad	America/Curacao
+CX	Christmas Island	OC	Flying Fish Cove	Indian/Christmas
+CY	Cyprus	EU	Nicosia	Asia/Nicosia,Asia/Famagusta
+CZ	Czechia	EU	Prague	Europe/Prague
+DE	Germany	EU	Berlin	Europe/Berlin,Europe/Busingen
+DJ	Djibouti	AF	Djibouti	Africa/Djibouti
+DK	Denmark	EU	Copenhagen	Europe/Copenhagen
+DM	Dominica	NA	Roseau	America/Dominica
+DO	Dominican Republic	NA	Santo Domingo	America/Santo_Domingo
+DZ	Algeria	AF	Algiers	Africa/Algiers
+EC	Ecuador	SA	Quito	America/Guayaquil,Pacific/Galapagos
+EE	Estonia	EU	Tallinn	Europe/Tallinn
+EG	Egypt	AF	Cairo	Africa/Cairo
+EH	Western Sahara	AF	El-Aaiun	Africa/El_Aaiun
+ER	Eritrea	AF	Asmara	Africa/Asmara
+ES	Spain	EU	Madrid	Europe/Madrid,Africa/Ceuta,Atlantic/Canary
+ET	Ethiopia	AF	Addis Ababa	Africa/Addis_Ababa
+FI	Finland	EU	Helsinki	Europe/Helsinki
+FJ	Fiji	OC	Suva	Pacific/Fiji
+FK	Falkland Islands	SA	Stanley	Atlantic/Stanley
+FM	Micronesia	OC	Palikir	Pacific/Chuuk,Pacific/Pohnpei,Pacific/Kosrae
+FO	Faroe Islands	EU	Torshavn	Atlantic/Faroe
+FR	France	EU	Paris	Europe/Paris
+GA	Gabon	AF	Libreville	Africa/Libreville
+GB	United Kingdom	EU	London	Europe/London
+GD	Grenada	NA	St. George's	America/Grenada
+GE	Georgia	AS	Tbilisi	Asia/Tbilisi
+GF	French Guiana	SA	Cayenne	America/Cayenne
+GG	Guernsey	EU	St Peter Port	Europe/Guernsey
+GH	Ghana	AF	Accra	Africa/Accra
+GI	Gibraltar	EU	Gibraltar	Europe/Gibraltar
+GL	Greenland	NA	Nuuk	America/Nuuk,America/Danmarkshavn,America/Scoresbysund,America/Thule
+GM	Gambia	AF	Banjul	Africa/Banjul
+GN	Guinea	AF	Conakry	Africa/Conakry
+GP	Guadeloupe	NA	Basse-Terre	America/Guadeloupe
+GQ	Equatorial Guinea	AF	Ciudad de la Paz	Africa/Malabo
+GR	Greece	EU	Athens	Europe/Athens
+GS	South Georgia and the South Sandwich Islands	AN	Grytviken	Atlantic/South_Georgia
+GT	Guatemala	NA	Guatemala City	America/Guatemala
+GU	Guam	OC	Hagatna	Pacific/Guam
+GW	Guinea-Bissau	AF	Bissau	Africa/Bissau
+GY	Guyana	SA	Georgetown	America/Guyana
+HK	Hong Kong	AS	Hong Kong	Asia/Hong_Kong
+HN	Honduras	NA	Tegucigalpa	America/Tegucigalpa
+HR	Croatia	EU	Zagreb	Europe/Zagreb
+HT	Haiti	NA	Port-au-Prince	America/Port-au-Prince
+HU	Hungary	EU	Budapest	Europe/Budapest
+ID	Indonesia	AS	Jakarta	Asia/Jakarta,Asia/Pontianak,Asia/Makassar,Asia/Jayapura
+IE	Ireland	EU	Dublin	Europe/Dublin
+IL	Israel	AS	Jerusalem	Asia/Jerusalem
+IM	Isle of Man	EU	Douglas	Europe/Isle_of_Man
+IN	India	AS	New Delhi	Asia/Kolkata
+IO	British Indian Ocean Territory	AS	Diego Garcia	Indian/Chagos
+IQ	Iraq	AS	Baghdad	Asia/Baghdad
+IR	Iran	AS	Tehran	Asia/Tehran
+IS	Iceland	EU	Reykjavik	Atlantic/Reykjavik
+IT	Italy	EU	Rome	Europe/Rome
+JE	Jersey	EU	Saint Helier	Europe/Jersey
+JM	Jamaica	NA	Kingston	America/Jamaica
+JO	Jordan	AS	Amman	Asia/Amman
+JP	Japan	AS	Tokyo	Asia/Tokyo
+KE	Kenya	AF	Nairobi	Africa/Nairobi
+KG	Kyrgyzstan	AS	Bishkek	Asia/Bishkek
+KH	Cambodia	AS	Phnom Penh	Asia/Phnom_Penh
+KI	Kiribati	OC	Tarawa	Pacific/Tarawa,Pacific/Kanton,Pacific/Kiritimati
+KM	Comoros	AF	Moroni	Indian/Comoro
+KN	Saint Kitts and Nevis	NA	Basseterre	America/St_Kitts
+KP	North Korea	AS	Pyongyang	Asia/Pyongyang
+KR	South Korea	AS	Seoul	Asia/Seoul
+KW	Kuwait	AS	Kuwait City	Asia/Kuwait
+KY	Cayman Islands	NA	George Town	America/Cayman
+KZ	Kazakhstan	AS	Nur-Sultan	Asia/Almaty,Asia/Qyzylorda,Asia/Qostanay,Asia/Aqtobe,Asia/Aqtau,Asia/Atyrau,Asia/Oral
+LA	Laos	AS	Vientiane	Asia/Vientiane
+LB	Lebanon	AS	Beirut	Asia/Beirut
+LC	Saint Lucia	NA	Castries	America/St_Lucia
+LI	Liechtenstein	EU	Vaduz	Europe/Vaduz
+LK	Sri Lanka	AS	Colombo	Asia/Colombo
+LR	Liberia	AF	Monrovia	Africa/Monrovia
+LS	Lesotho	AF	Maseru	Africa/Maseru
+LT	Lithuania	EU	Vilnius	Europe/Vilnius
+LU	Luxembourg	EU	Luxembourg	Europe/Luxembourg
+LV	Latvia	EU	Riga	Europe/Riga
+LY	Libya	AF	Tripoli	Africa/Tripoli
+MA	Morocco	AF	Rabat	Africa/Casablanca
+MC	Monaco	EU	Monaco	Europe/Monaco
+MD	Moldova	EU	Chisinau	Europe/Chisinau
+ME	Montenegro	EU	Podgorica	Europe/Podgorica
+MF	Saint Martin	NA	Marigot	America/Marigot
+MG	Madagascar	AF	Antananarivo	Indian/Antananarivo
+MH	Marshall Islands	OC	Majuro	Pacific/Majuro,Pacific/Kwajalein
+MK	North Macedonia	EU	Skopje	Europe/Skopje
+ML	Mali	AF	Bamako	Africa/Bamako
+MM	Myanmar	AS	Nay Pyi Taw	Asia/Yangon
+MN	Mongolia	AS	Ulaanbaatar	Asia/Ulaanbaatar,Asia/Hovd
+MO	Macao	AS	Macao	Asia/Macau
+MP	Northern Mariana Islands	OC	Saipan	Pacific/Saipan
+MQ	Martinique	NA	Fort-de-France	America/Martinique
+MR	Mauritania	AF	Nouakchott	Africa/Nouakchott
+MS	Montserrat	NA	Plymouth	America/Montserrat
+MT	Malta	EU	Valletta	Europe/Malta
+MU	Mauritius	AF	Port Louis	Indian/Mauritius
+MV	Maldives	AS	Male	Indian/Maldives
+MW	Malawi	AF	Lilongwe	Africa/Blantyre
+MX	Mexico	NA	Mexico City	America/Mexico_City,America/Cancun,America/Merida,America/Monterrey,America/Matamoros,America/Chihuahua,America/Ciudad_Juarez,America/Ojinaga,America/Mazatlan,America/Bahia_Banderas,America/Hermosillo,America/Tijuana
+MY	Malaysia	AS	Kuala Lumpur	Asia/Kuala_Lumpur,Asia/Kuching
+MZ	Mozambique	AF	Maputo	Africa/Maputo
+NA	Namibia	AF	Windhoek	Africa/Windhoek
+NC	New Caledonia	OC	Noumea	Pacific/Noumea
+NE	Niger	AF	Niamey	Africa/Niamey
+NF	Norfolk Island	OC	Kingston	Pacific/Norfolk
+NG	Nigeria	AF	Abuja	Africa/Lagos
+NI	Nicaragua	NA	Managua	America/Managua
+NL	The Netherlands	EU	Amsterdam	Europe/Amsterdam
+NO	Norway	EU	Oslo	Europe/Oslo
+NP	Nepal	AS	Kathmandu	Asia/Kathmandu
+NR	Nauru	OC	Yaren	Pacific/Nauru
+NU	Niue	OC	Alofi	Pacific/Niue
+NZ	New Zealand	OC	Wellington	Pacific/Auckland,Pacific/Chatham
+OM	Oman	AS	Muscat	Asia/Muscat
+PA	Panama	NA	Panama City	America/Panama
+PE	Peru	SA	Lima	America/Lima
+PF	French Polynesia	OC	Papeete	Pacific/Tahiti,Pacific/Marquesas,Pacific/Gambier
+PG	Papua New Guinea	OC	Port Moresby	Pacific/Port_Moresby,Pacific/Bougainville
+PH	Philippines	AS	Manila	Asia/Manila
+PK	Pakistan	AS	Islamabad	Asia/Karachi
+PL	Poland	EU	Warsaw	Europe/Warsaw
+PM	Saint Pierre and Miquelon	NA	Saint-Pierre	America/Miquelon
+PN	Pitcairn	OC	Adamstown	Pacific/Pitcairn
+PR	Puerto Rico	NA	San Juan	America/Puerto_Rico
+PS	Palestinian Territory	AS	East Jerusalem	Asia/Gaza,Asia/Hebron
+PT	Portugal	EU	Lisbon	Europe/Lisbon,Atlantic/Madeira,Atlantic/Azores
+PW	Palau	OC	Melekeok	Pacific/Palau
+PY	Paraguay	SA	Asuncion	America/Asuncion
+QA	Qatar	AS	Doha	Asia/Qatar
+RE	Reunion	AF	Saint-Denis	Indian/Reunion
+RO	Romania	EU	Bucharest	Europe/Bucharest
+RS	Serbia	EU	Belgrade	Europe/Belgrade
+RU	Russia	EU	Moscow	Europe/Kaliningrad,Europe/Moscow,Europe/Kirov,Europe/Volgograd,Europe/Astrakhan,Europe/Saratov,Europe/Ulyanovsk,Europe/Samara,Asia/Yekaterinburg,Asia/Omsk,Asia/Novosibirsk,Asia/Barnaul,Asia/Tomsk,Asia/Novokuznetsk,Asia/Krasnoyarsk,Asia/Irkutsk,Asia/Chita,Asia/Yakutsk,Asia/Khandyga,Asia/Vladivostok,Asia/Ust-Nera,Asia/Magadan,Asia/Sakhalin,Asia/Srednekolymsk,Asia/Kamchatka,Asia/Anadyr
+RW	Rwanda	AF	Kigali	Africa/Kigali
+SA	Saudi Arabia	AS	Riyadh	Asia/Riyadh
+SB	Solomon Islands	OC	Honiara	Pacific/Guadalcanal
+SC	Seychelles	AF	Victoria	Indian/Mahe
+SD	Sudan	AF	Khartoum	Africa/Khartoum
+SS	South Sudan	AF	Juba	Africa/Juba
+SE	Sweden	EU	Stockholm	Europe/Stockholm
+SG	Singapore	AS	Singapore	Asia/Singapore
+SH	Saint Helena	AF	Jamestown	Atlantic/St_Helena
+SI	Slovenia	EU	Ljubljana	Europe/Ljubljana
+SJ	Svalbard and Jan Mayen	EU	Longyearbyen	Arctic/Longyearbyen
+SK	Slovakia	EU	Bratislava	Europe/Bratislava
+SL	Sierra Leone	AF	Freetown	Africa/Freetown
+SM	San Marino	EU	San Marino	Europe/San_Marino
+SN	Senegal	AF	Dakar	Africa/Dakar
+SO	Somalia	AF	Mogadishu	Africa/Mogadishu
+SR	Suriname	SA	Paramaribo	America/Paramaribo
+ST	Sao Tome and Principe	AF	Sao Tome	Africa/Sao_Tome
+SV	El Salvador	NA	San Salvador	America/El_Salvador
+SX	Sint Maarten	NA	Philipsburg	America/Lower_Princes
+SY	Syria	AS	Damascus	Asia/Damascus
+SZ	Eswatini	AF	Mbabane	Africa/Mbabane
+TC	Turks and Caicos Islands	NA	Cockburn Town	America/Grand_Turk
+TD	Chad	AF	N'Djamena	Africa/Ndjamena
+TF	French Southern Territories	AN	Port-aux-Francais	Indian/Kerguelen
+TG	Togo	AF	Lome	Africa/Lome
+TH	Thailand	AS	Bangkok	Asia/Bangkok
+TJ	Tajikistan	AS	Dushanbe	Asia/Dushanbe
+TK	Tokelau	OC		Pacific/Fakaofo
+TL	Timor Leste	OC	Dili	Asia/Dili
+TM	Turkmenistan	AS	Ashgabat	Asia/Ashgabat
+TN	Tunisia	AF	Tunis	Africa/Tunis
+TO	Tonga	OC	Nuku'alofa	Pacific/Tongatapu
+TR	Turkey	AS	Ankara	Europe/Istanbul
+TT	Trinidad and Tobago	NA	Port of Spain	America/Port_of_Spain
+TV	Tuvalu	OC	Funafuti	Pacific/Funafuti
+TW	Taiwan	AS	Taipei	Asia/Taipei
+TZ	Tanzania	AF	Dodoma	Africa/Dar_es_Salaam
+UA	Ukraine	EU	Kyiv	Europe/Simferopol,Europe/Kyiv
+UG	Uganda	AF	Kampala	Africa/Kampala
+UM	United States Minor Outlying Islands	OC		Pacific/Midway,Pacific/Wake
+US	United States	NA	Washington	America/New_York,America/Detroit,America/Kentucky/Louisville,America/Kentucky/Monticello,America/Indiana/Indianapolis,America/Indiana/Vincennes,America/Indiana/Winamac,America/Indiana/Marengo,America/Indiana/Petersburg,America/Indiana/Vevay,America/Chicago,America/Indiana/Tell_City,America/Indiana/Knox,America/Menominee,America/North_Dakota/Center,America/North_Dakota/New_Salem,America/North_Dakota/Beulah,America/Denver,America/Boise,America/Phoenix,America/Los_Angeles,America/Anchorage,America/Juneau,America/Sitka,America/Metlakatla,America/Yakutat,America/Nome,America/Adak,Pacific/Honolulu
+UY	Uruguay	SA	Montevideo	America/Montevideo
+UZ	Uzbekistan	AS	Tashkent	Asia/Samarkand,Asia/Tashkent
+VA	Vatican	EU	Vatican City	Europe/Vatican
+VC	Saint Vincent and the Grenadines	NA	Kingstown	America/St_Vincent
+VE	Venezuela	SA	Caracas	America/Caracas
+VG	British Virgin Islands	NA	Road Town	America/Tortola
+VI	U.S. Virgin Islands	NA	Charlotte Amalie	America/St_Thomas
+VN	Vietnam	AS	Hanoi	Asia/Ho_Chi_Minh
+VU	Vanuatu	OC	Port Vila	Pacific/Efate
+WF	Wallis and Futuna	OC	Mata Utu	Pacific/Wallis
+WS	Samoa	OC	Apia	Pacific/Apia
+YE	Yemen	AS	Sanaa	Asia/Aden
+YT	Mayotte	AF	Mamoudzou	Indian/Mayotte
+ZA	South Africa	AF	Pretoria	Africa/Johannesburg
+ZM	Zambia	AF	Lusaka	Africa/Lusaka
+ZW	Zimbabwe	AF	Harare	Africa/Harare
