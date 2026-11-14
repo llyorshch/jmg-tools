@@ -1,15 +1,15 @@
-# jbang-catalog
+# jmg-tools
 
-JBang catalog for `llyorshch`.
+JBang catalog for `llyorshch` (use aliases as `alias@llyorshch/jmg-tools`).
 
 ## mvnrun
 
 Runs standalone Maven plugin goals without installing Maven.
 
 ```bash
-jbang mvnrun@llyorshch help:evaluate -Dexpression=java.version -q -DforceStdout
-jbang mvnrun@llyorshch org.apache.maven.plugins:maven-dependency-plugin:3.8.1:get -Dartifact=org.slf4j:slf4j-api:2.0.13
-jbang mvnrun@llyorshch --maven-version 3.9.15 help:help
+jbang mvnrun@llyorshch/jmg-tools help:evaluate -Dexpression=java.version -q -DforceStdout
+jbang mvnrun@llyorshch/jmg-tools org.apache.maven.plugins:maven-dependency-plugin:3.8.1:get -Dartifact=org.slf4j:slf4j-api:2.0.13
+jbang mvnrun@llyorshch/jmg-tools --maven-version 3.9.15 help:help
 ```
 
 On first use it downloads Maven from Maven Central, verifies its SHA-512 and caches it under
@@ -32,14 +32,14 @@ native executable. See [tzu/README.md](tzu/README.md) for screenshots and all op
 | `tz-map`      | World timezone map with day/night and the daylight saving time rules             |
 
 ```bash
-jbang tz-now@llyorshch
-jbang tz-meet@llyorshch fri --at 16:00
-jbang tz-holidays@llyorshch 2026-Q4
-jbang tz-find@llyorshch "san jose, costa rica"
-jbang tz-map@llyorshch --mode dst
+jbang tz-now@llyorshch/jmg-tools
+jbang tz-meet@llyorshch/jmg-tools fri --at 16:00
+jbang tz-holidays@llyorshch/jmg-tools 2026-Q4
+jbang tz-find@llyorshch/jmg-tools "san jose, costa rica"
+jbang tz-map@llyorshch/jmg-tools --mode dst
 
 # install as commands (add --native for a GraalVM native executable)
-for c in tz-now tz-meet tz-holidays tz-find tz-map; do jbang app install $c@llyorshch; done
+for c in tz-now tz-meet tz-holidays tz-find tz-map; do jbang app install $c@llyorshch/jmg-tools; done
 ```
 
 ![tz-now](tzu/docs/tz-now.png)

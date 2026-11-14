@@ -31,7 +31,7 @@ final class Net {
     static String get(String url) throws IOException {
         try {
             HttpRequest req = HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(15))
-                    .header("User-Agent", "tzu-timezone-utilities/1.0 (+https://github.com/llyorshch/jbang-catalog)")
+                    .header("User-Agent", "tzu-timezone-utilities/1.0 (+https://github.com/llyorshch/jmg-tools)")
                     .header("Accept", "application/json").GET().build();
             HttpResponse<String> res = client().send(req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             if (res.statusCode() == 204) return "[]";

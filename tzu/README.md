@@ -14,23 +14,23 @@ Five small, colourful command-line tools for working across timezones. Each one 
 
 ## Run or install with JBang
 
-The commands are published as aliases in the [`llyorshch` JBang catalog](../jbang-catalog.json):
+The commands are published as aliases in the [`llyorshch/jmg-tools` JBang catalog](../jbang-catalog.json):
 
 ```bash
 # run without installing
-jbang tz-now@llyorshch
-jbang tz-meet@llyorshch fri --at 16:00
-jbang tz-find@llyorshch "san jose, costa rica"
+jbang tz-now@llyorshch/jmg-tools
+jbang tz-meet@llyorshch/jmg-tools fri --at 16:00
+jbang tz-find@llyorshch/jmg-tools "san jose, costa rica"
 
 # install them as commands on your PATH
-jbang app install tz-now@llyorshch
-jbang app install tz-meet@llyorshch
-jbang app install tz-holidays@llyorshch
-jbang app install tz-find@llyorshch
-jbang app install tz-map@llyorshch
+jbang app install tz-now@llyorshch/jmg-tools
+jbang app install tz-meet@llyorshch/jmg-tools
+jbang app install tz-holidays@llyorshch/jmg-tools
+jbang app install tz-find@llyorshch/jmg-tools
+jbang app install tz-map@llyorshch/jmg-tools
 
 # or install a native executable (needs GraalVM, see below)
-jbang app install --native tz-map@llyorshch
+jbang app install --native tz-map@llyorshch/jmg-tools
 ```
 
 You need Java 22 or newer. JBang downloads a JDK for you if none is installed.
@@ -155,7 +155,7 @@ a few milliseconds.
 ```bash
 jbang export native -O tz-now TzNow.java     # one command
 ./build-native.sh                            # all of them, into ./build
-jbang app install --native tz-now@llyorshch  # install natively from the catalog
+jbang app install --native tz-now@llyorshch/jmg-tools  # install natively from the catalog
 ```
 
 You need GraalVM 22+ (`JAVA_HOME` or `GRAALVM_HOME`) and a C toolchain (`gcc` on Linux,
