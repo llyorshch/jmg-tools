@@ -88,6 +88,13 @@ final class Dst {
                 + " " + (delta > 0 ? "+" : "−") + Ui.diff(Math.abs(delta)).substring(1);
     }
 
+    /** Compact form: "14 Mar 2027 02:00→03:00". */
+    static String transitionShort(ZoneOffsetTransition t) {
+        if (t == null) return "—";
+        return t.getDateTimeBefore().format(DateTimeFormatter.ofPattern("d MMM yyyy HH:mm", Locale.ENGLISH))
+                + "→" + t.getDateTimeAfter().format(DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH));
+    }
+
     /** A key that groups zones following the same rule set (e.g. all of the EU). */
     static String signature(ZoneId zone) {
         List<ZoneOffsetTransitionRule> rules = zone.getRules().getTransitionRules();

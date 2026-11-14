@@ -276,7 +276,8 @@ public class TzHolidays implements Callable<Integer> {
     /** Week / month: one row per country, one column per day. */
     void renderGrid(Rect area, Buffer buf) {
         int days = (int) (end.toEpochDay() - start.toEpochDay() + 1);
-        int labelW = 30;
+        boolean narrow = span == Span_.MONTH && area.width() - 4 - 30 < days * 2;
+        int labelW = narrow ? 10 : 30;
         int cw = span == Span_.WEEK ? Math.max(6, Math.min(18, (area.width() - 4 - labelW) / 7)) : area.width() - 4 - labelW >= days * 3 ? 3 : 2;
         int boxW = Math.min(area.width(), Math.max(titleLine().width() + 6, labelW + days * cw + 4));
         Rect box = new Rect(area.x(), area.y(), boxW, ccs.size() + 4);
@@ -300,11 +301,16 @@ public class TzHolidays implements Callable<Integer> {
         }
         for (String cc : ccs) {
             ZoneId z = Geo.mainZone(cc);
-            String off = Ui.offset(z.getRules().getOffset(start.atStartOfDay(z).toInstant()));
+            String off = Ui.offset(z.getRules().getOffset(start.plusDays(days / 2).atStartOfDay(z).toInstant()));
             Style nameStyle = noData.contains(cc) || failed.contains(cc) ? Ui.DIM : Ui.NORMAL;
-            buf.setLine(x0, y, Line.from(Span.styled(cc + " ", Style.create().fg(Ui.ACCENT).bold()),
-                    Span.styled(Ui.pad(ellipsis(Geo.countryName(cc), labelW - 13), labelW - 12), nameStyle),
-                    Span.styled(Ui.pad(off, 9), Ui.DIM)), labelW);
+            if (narrow) {
+                buf.setLine(x0, y, Line.from(Span.styled(cc + " ", Style.create().fg(Ui.ACCENT).bold()),
+                        Span.styled(Ui.pad(off.replace("UTC", ""), labelW - 3), Ui.DIM)), labelW);
+            } else {
+                buf.setLine(x0, y, Line.from(Span.styled(cc + " ", Style.create().fg(Ui.ACCENT).bold()),
+                        Span.styled(Ui.pad(ellipsis(Geo.countryName(cc), labelW - 13), labelW - 12), nameStyle),
+                        Span.styled(Ui.pad(off, 9), Ui.DIM)), labelW);
+            }
             for (int i = 0; i < days; i++) {
                 LocalDate d = start.plusDays(i);
                 boolean we = d.getDayOfWeek().getValue() >= 6;

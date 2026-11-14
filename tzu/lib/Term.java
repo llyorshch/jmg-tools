@@ -6,7 +6,7 @@
 //DEPS dev.tamboui:tamboui-panama-backend:0.7.0
 //JAVA_OPTIONS --enable-native-access=ALL-UNNAMED
 //JAVAC_OPTIONS -proc:full
-//NATIVE_OPTIONS --enable-native-access=ALL-UNNAMED -H:+UnlockExperimentalVMOptions -H:+ForeignAPISupport --enable-url-protocols=https
+//NATIVE_OPTIONS --enable-native-access=ALL-UNNAMED -H:+UnlockExperimentalVMOptions -H:+ForeignAPISupport -H:+SharedArenaSupport --enable-url-protocols=https
 // Shared build directives for every tzu command live here (JBang merges directives from //SOURCES).
 
 import dev.tamboui.buffer.Buffer;

@@ -234,25 +234,27 @@ public class TzMap implements Callable<Integer> {
             Dst.Info d = Dst.info(e.zone(), instant);
             Style state = d.active() ? Style.create().fg(Color.rgb(0xff, 0x9e, 0x40)).bold()
                     : d.observes() ? Style.create().fg(Color.rgb(0x3d, 0xa5, 0xd9)) : Ui.DIM;
+            boolean isLocal = e.zone().getId().equals(local.getId());
             List<Cell> cells = new ArrayList<>(List.of(
                     Cell.from(Span.styled("██", Style.create().fg(Ui.offsetColor(e.zone().getRules().getOffset(instant).getTotalSeconds())))),
-                    Cell.from(Span.styled(e.label(), e.zone().getId().equals(local.getId()) ? Style.create().fg(Ui.BRIGHT).bold() : Ui.NORMAL))));
+                    Cell.from(Line.from(Span.styled(e.label(), isLocal ? Style.create().fg(Ui.BRIGHT).bold() : Ui.NORMAL),
+                            Span.styled(!wide && d.active() ? " ☼" : "", state)))));
             if (wide) cells.add(Cell.from(Span.styled(e.zone().getId(), Ui.DIM)));
-            cells.addAll(List.of(
-                    Cell.from(Span.styled(Ui.offset(d.standard()), Ui.NORMAL)),
-                    Cell.from(Span.styled(d.daylight() == null ? "—" : Ui.offset(d.daylight()), Ui.NORMAL)),
-                    Cell.from(Span.styled(d.active() ? "☼ summer" : d.observes() ? "standard" : "no DST", state)),
-                    Cell.from(Span.styled(d.starts(), Style.create().fg(Ui.GOOD))),
-                    Cell.from(Span.styled(d.ends(), Style.create().fg(Ui.WARN))),
-                    Cell.from(Span.styled(Dst.transition(d.next()), Ui.NORMAL))));
+            cells.add(Cell.from(Span.styled(Ui.offset(d.standard()), Ui.NORMAL)));
+            cells.add(Cell.from(Span.styled(d.daylight() == null ? "—" : Ui.offset(d.daylight()), Ui.NORMAL)));
+            if (wide) cells.add(Cell.from(Span.styled(d.active() ? "☼ summer" : d.observes() ? "standard" : "no DST", state)));
+            cells.add(Cell.from(Span.styled(d.starts(), Style.create().fg(Ui.GOOD))));
+            cells.add(Cell.from(Span.styled(d.ends(), Style.create().fg(Ui.WARN))));
+            cells.add(Cell.from(Span.styled(wide ? Dst.transition(d.next()) : Dst.transitionShort(d.next()), Ui.NORMAL)));
             rows.add(Row.from(cells));
         }
         Row header = wide ? Row.from("", "Place", "Zone", "Standard", "DST", "Now", "DST starts", "DST ends", "Next change").style(Ui.HEADER)
-                : Row.from("", "Place", "Standard", "DST", "Now", "DST starts", "DST ends", "Next change").style(Ui.HEADER);
+                : Row.from("", "Place", "Standard", "DST", "DST starts", "DST ends", "Next change").style(Ui.HEADER);
         List<Constraint> widths = new ArrayList<>(List.of(Constraint.length(2), Constraint.fill()));
         if (wide) widths.add(Constraint.length(20));
-        widths.addAll(List.of(Constraint.length(8), Constraint.length(8), Constraint.length(8), Constraint.length(22),
-                Constraint.length(22), Constraint.length(31)));
+        widths.addAll(List.of(Constraint.length(8), Constraint.length(8)));
+        if (wide) widths.add(Constraint.length(8));
+        widths.addAll(List.of(Constraint.length(22), Constraint.length(22), Constraint.length(wide ? 31 : 23)));
         Ui.table(buf, new Rect(area.x(), area.y(), area.width(), Math.min(area.height(), rows.size() + 3)), header, rows, widths,
                 Ui.panel("daylight saving time rules"));
     }

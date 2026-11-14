@@ -179,7 +179,7 @@ public class TzMeet implements Callable<Integer> {
     String cellText(ZonedDateTime local, int w) {
         if (local.getHour() == 0 && local.getMinute() == 0 || local.getHour() == 0 && w >= 4) {
             String dow = local.format(DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH));
-            return Ui.pad(dow, w);
+            return Ui.pad(w >= 4 ? dow : dow.substring(0, 2), w);
         }
         int h = local.getHour();
         if (h12) h = h % 12 == 0 ? 12 : h % 12;
@@ -197,7 +197,7 @@ public class TzMeet implements Callable<Integer> {
         boolean anyFraction = false;
         for (Config.Entry e : entries) if (e.zone().getRules().getOffset(cols.get(12).toInstant()).getTotalSeconds() % 3600 != 0) anyFraction = true;
         int avail = area.width() - 4 - labelW - offW - 1;
-        int cw = avail >= n * 4 ? 4 : avail >= n * 3 || anyFraction ? 3 : 2;
+        int cw = avail >= n * 4 ? 4 : avail >= n * 3 ? 3 : 2;
         int gridW = labelW + offW + 1 + n * cw;
         int boxW = Math.min(area.width(), gridW + 4);
         ZonedDateTime nowRef = ZonedDateTime.now(refZone);
