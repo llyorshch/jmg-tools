@@ -2,6 +2,25 @@
 
 JBang catalog for `llyorshch` (use aliases as `alias@llyorshch/jmg-tools`).
 
+## Add the catalog to JBang
+
+You can use any alias directly as `alias@llyorshch/jmg-tools` without setting anything up.
+To use a shorter name instead, add the catalog to your JBang installation once:
+
+```bash
+jbang catalog add --name jmg llyorshch/jmg-tools
+```
+
+Now the aliases work as `alias@jmg`:
+
+```bash
+jbang alias list jmg      # show the tools in the catalog
+jbang tz-now@jmg          # run one
+```
+
+To pick up new or changed aliases later, run `jbang catalog update`.
+To remove the catalog, run `jbang catalog remove jmg`.
+
 ## tzu: timezone utilities
 
 Five colourful terminal tools for working across timezones. Each one is a JBang script
