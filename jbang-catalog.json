@@ -1,10 +1,6 @@
 {
   "catalogs": {},
   "aliases": {
-    "mvnrun": {
-      "script-ref": "mvnrun.java",
-      "description": "Run standalone Maven plugin goals without installing Maven"
-    },
     "tz-now": {
       "script-ref": "tzu/TzNow.java",
       "description": "World clock: current time here and in a configurable group of timezones (tzu)"
