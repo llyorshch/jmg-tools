@@ -69,5 +69,33 @@ jbang tz-map@llyorshch/jmg-tools --mode dst
 ```
 
 To install them as commands, see [Install the scripts as local commands](#install-the-scripts-as-local-commands).
+Add `--json` to any of them for machine-readable output.
+
+### Use with Claude Code
+
+`tzu` is a self-contained Claude Code plugin, and this repository is a marketplace that lists it.
+It needs [JBang](https://www.jbang.dev/download/) and a Unix shell.
+
+```bash
+claude plugin marketplace add llyorshch/jmg-tools
+claude plugin install tzu@jmg-tools
+```
+
+To list it in another marketplace, add this entry to that marketplace's `plugins` array:
+
+```json
+{
+  "name": "tzu",
+  "source": {
+    "source": "git-subdir",
+    "url": "llyorshch/jmg-tools",
+    "path": "tzu"
+  },
+  "description": "Accurate world clocks, time conversion, meeting planning, public holidays, timezone lookup and daylight saving rules."
+}
+```
+
+Check changes with `claude plugin validate ./tzu --strict` and try them with
+`claude --plugin-dir ./tzu`. Increase `version` in `tzu/.claude-plugin/plugin.json` for each release.
 
 ![tz-now](tzu/docs/tz-now.png)

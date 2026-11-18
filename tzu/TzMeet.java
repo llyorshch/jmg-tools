@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java
+//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java lib/Json.java
 //FILES data/cities.tsv=data/cities.tsv
 //FILES data/countries.tsv=data/countries.tsv
 //FILES data/landmask.txt=data/landmask.txt
@@ -72,6 +72,9 @@ public class TzMeet implements Callable<Integer> {
     @Option(names = "--no-color", description = "Disable colours (also honours NO_COLOR)")
     boolean noColor;
 
+    @Option(names = "--json", description = "Print the data as JSON (not with --interactive)")
+    boolean json;
+
     Config cfg;
     ZoneId refZone;
     String refLabel;
@@ -89,6 +92,14 @@ public class TzMeet implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         if (noColor) Term.noColor = true;
+        if (json && interactive) {
+            Term.error("--json cannot be combined with --interactive");
+            return 2;
+        }
+        if (json && duration <= 0) {
+            Term.error("--duration must be positive");
+            return 2;
+        }
         cfg = Config.load();
         h12 |= cfg.clock12;
         ZoneId local = Config.localZone();
@@ -116,6 +127,10 @@ public class TzMeet implements Callable<Integer> {
         entries.sort(Comparator.comparingInt((Config.Entry e) -> e.zone().getId().equals(refZone.getId()) ? Integer.MIN_VALUE
                 : e.zone().getRules().getOffset(noon).getTotalSeconds()));
 
+        if (json) {
+            Term.json(toJson());
+            return 0;
+        }
         if (interactive) {
             if (selected < 0) selected = day.equals(ZonedDateTime.now(refZone).toLocalDate()) ? ZonedDateTime.now(refZone).getHour() : ws;
             Live.run(Duration.ofSeconds(30), this::render, k -> {
@@ -174,6 +189,73 @@ public class TzMeet implements Callable<Integer> {
         for (int i = 0; i < cols.size(); i++) idx.add(i);
         idx.sort(Comparator.comparingInt((Integer i) -> -score(cols.get(i))).thenComparingInt(i -> Math.abs(cols.get(i).getHour() - 13)));
         return idx;
+    }
+
+    /** The contiguous runs of best-scoring hours, as {start, end} pairs. */
+    List<ZonedDateTime[]> bestRanges(List<ZonedDateTime> cols, int bestScore) {
+        List<ZonedDateTime[]> ranges = new ArrayList<>();
+        for (int i = 0; i < cols.size(); i++) {
+            if (score(cols.get(i)) != bestScore) continue;
+            int j = i;
+            while (j + 1 < cols.size() && score(cols.get(j + 1)) == bestScore) j++;
+            ranges.add(new ZonedDateTime[]{cols.get(i), cols.get(j).plusHours(1)});
+            i = j;
+        }
+        return ranges;
+    }
+
+    /** working_hours, night or outside_working_hours, for a slot in one zone's local time. */
+    String verdict(ZonedDateTime localStart, ZonedDateTime localEnd) {
+        var p = Ui.period(localStart.toLocalTime(), ws, we);
+        var pe = Ui.period(localEnd.minusMinutes(1).toLocalTime(), ws, we);
+        return p == Ui.Period.WORK && pe == Ui.Period.WORK ? "working_hours"
+                : p == Ui.Period.NIGHT || pe == Ui.Period.NIGHT ? "night" : "outside_working_hours";
+    }
+
+    Object toJson() {
+        List<ZonedDateTime> cols = columns(day);
+        List<Integer> best = bestColumns(cols);
+        int bestScore = score(cols.get(best.get(0)));
+
+        List<Object> zoneRows = new ArrayList<>();
+        ZonedDateTime middle = cols.get(Math.min(12, cols.size() - 1));
+        for (Config.Entry e : entries) {
+            int diff = middle.withZoneSameInstant(e.zone()).getOffset().getTotalSeconds() - middle.getOffset().getTotalSeconds();
+            zoneRows.add(Json.obj("label", e.label(), "zone", e.zone().getId(),
+                    "is_reference", e.zone().getId().equals(refZone.getId()),
+                    "diff_from_reference_minutes", diff / 60));
+        }
+        List<Object> hours = new ArrayList<>();
+        for (ZonedDateTime c : cols) {
+            List<Object> local = new ArrayList<>();
+            for (Config.Entry e : entries) {
+                ZonedDateTime t = c.withZoneSameInstant(e.zone());
+                local.add(Json.obj("label", e.label(), "date", t.toLocalDate().toString(), "time", Json.hhmm(t),
+                        "period", Json.period(periodAt(e, c)), "weekend", t.getDayOfWeek().getValue() >= 6));
+            }
+            hours.add(Json.obj("start", Json.time(c), "zones_in_work_hours", working(c),
+                    "best", score(c) == bestScore, "zones", local));
+        }
+        List<Object> ranges = new ArrayList<>();
+        for (ZonedDateTime[] r : bestRanges(cols, bestScore)) {
+            ranges.add(Json.obj("start", Json.time(r[0]), "end", Json.time(r[1]), "zones_in_work_hours", working(r[0])));
+        }
+        ZonedDateTime start = at != null ? day.atTime(Dates.parseTime(at)).atZone(refZone) : cols.get(best.get(0));
+        ZonedDateTime end = start.plusMinutes(duration);
+        List<Object> slotZones = new ArrayList<>();
+        for (Config.Entry e : entries) {
+            ZonedDateTime ls = start.withZoneSameInstant(e.zone()), le = end.withZoneSameInstant(e.zone());
+            slotZones.add(Json.obj("label", e.label(), "zone", e.zone().getId(), "start", Json.time(ls), "end", Json.time(le),
+                    "weekday", Json.weekday(ls), "utc_offset", Json.offset(ls.getOffset()), "verdict", verdict(ls, le)));
+        }
+        return Json.obj("date", day.toString(),
+                "reference", Json.obj("label", refLabel, "zone", refZone.getId()),
+                "work_hours", Json.obj("start", ws, "end", we),
+                "zones", zoneRows,
+                "best_slots", ranges,
+                "slot", Json.obj("source", at != null ? "requested" : "best", "start", Json.time(start), "end", Json.time(end),
+                        "duration_minutes", duration, "zones", slotZones),
+                "hours", hours);
     }
 
     String cellText(ZonedDateTime local, int w) {
@@ -276,13 +358,7 @@ public class TzMeet implements Callable<Integer> {
         // ------------------------------------------------------------------ best slots summary
         if (y < area.bottom()) {
             List<String> ranges = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                if (score(cols.get(i)) != bestScore) continue;
-                int j = i;
-                while (j + 1 < n && score(cols.get(j + 1)) == bestScore) j++;
-                ranges.add(Ui.time(cols.get(i), h12) + "–" + Ui.time(cols.get(j).plusHours(1), h12));
-                i = j;
-            }
+            for (ZonedDateTime[] r : bestRanges(cols, bestScore)) ranges.add(Ui.time(r[0], h12) + "–" + Ui.time(r[1], h12));
             int bw = working(cols.get(best.get(0)));
             buf.setLine(area.x() + 1, y, Line.from(
                     Span.styled("★ Best: ", Style.create().fg(Ui.WARN).bold()),
@@ -308,9 +384,11 @@ public class TzMeet implements Callable<Integer> {
             for (Config.Entry e : entries) {
                 ZonedDateTime ls = start.withZoneSameInstant(e.zone()), le = end.withZoneSameInstant(e.zone());
                 var p = Ui.period(ls.toLocalTime(), ws, we);
-                var pe = Ui.period(le.minusMinutes(1).toLocalTime(), ws, we);
-                String verdict = p == Ui.Period.WORK && pe == Ui.Period.WORK ? "✔ working hours"
-                        : p == Ui.Period.NIGHT || pe == Ui.Period.NIGHT ? "✘ night" : "~ outside working hours";
+                String verdict = switch (verdict(ls, le)) {
+                    case "working_hours" -> "✔ working hours";
+                    case "night" -> "✘ night";
+                    default -> "~ outside working hours";
+                };
                 Color vc = verdict.startsWith("✔") ? Ui.GOOD : verdict.startsWith("✘") ? Ui.BAD : Ui.WARN;
                 rows.add(Row.from(
                         Cell.from(Span.styled(Ui.skyIcon(ls.toLocalTime()), Style.create().fg(Ui.skyColor(ls.toLocalTime())))),

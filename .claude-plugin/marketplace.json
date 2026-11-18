@@ -1,0 +1,17 @@
+{
+  "name": "jmg-tools",
+  "owner": {
+    "name": "llyorshch",
+    "url": "https://github.com/llyorshch"
+  },
+  "description": "Command-line tools by llyorshch, packaged for Claude Code.",
+  "plugins": [
+    {
+      "name": "tzu",
+      "source": "./tzu",
+      "description": "Accurate world clocks, time conversion, meeting planning, public holidays, timezone lookup and daylight saving rules.",
+      "category": "productivity",
+      "tags": ["timezone", "time", "meetings", "holidays"]
+    }
+  ]
+}

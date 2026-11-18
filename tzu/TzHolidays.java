@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java
+//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java lib/Json.java
 //FILES data/cities.tsv=data/cities.tsv
 //FILES data/countries.tsv=data/countries.tsv
 //FILES data/landmask.txt=data/landmask.txt
@@ -96,6 +96,9 @@ public class TzHolidays implements Callable<Integer> {
     @Option(names = "--no-color", description = "Disable colours (also honours NO_COLOR)")
     boolean noColor;
 
+    @Option(names = "--json", description = "Print the data as JSON; exits 1 if a country's holidays could not be loaded")
+    boolean json;
+
     static final Color NATIONAL = Color.rgb(0xd9, 0x46, 0x5f);
     static final Color REGIONAL = Color.rgb(0x9a, 0x6a, 0x2a);
     static final Color MULTI = Color.rgb(0xb0, 0x4c, 0xf0);
@@ -148,6 +151,12 @@ public class TzHolidays implements Callable<Integer> {
         }
         holidays.sort(Comparator.comparing(Holidays.Holiday::date).thenComparing(h -> ccs.indexOf(h.cc())));
 
+        if (json) {
+            Term.json(toJson());
+            if (failed.isEmpty()) return 0;
+            Term.error("could not load holidays for " + names(failed) + (offline ? " (offline, not cached)" : ""));
+            return 1;
+        }
         int width = Term.width();
         if (span == Span_.WEEK || span == Span_.MONTH) {
             int h = ccs.size() + 6;
@@ -171,6 +180,37 @@ public class TzHolidays implements Callable<Integer> {
             Term.println(Term.noColor ? "  " + String.join(" · ", msg) : "  \u001b[2m" + String.join(" · ", msg) + "\u001b[0m");
         }
         return 0;
+    }
+
+    Object toJson() {
+        List<Object> countryRows = new ArrayList<>();
+        for (String cc : ccs) {
+            countryRows.add(Json.obj("code", cc, "name", Geo.countryName(cc),
+                    "status", failed.contains(cc) ? "failed" : noData.contains(cc) ? "no_data" : "ok"));
+        }
+        LocalDate today = LocalDate.now(refZone);
+        List<Object> rows = new ArrayList<>();
+        for (Holidays.Holiday h : holidays) {
+            ZoneId z = Geo.mainZone(h.cc());
+            rows.add(Json.obj("date", h.date().toString(),
+                    "weekday", Json.weekday(h.date().atStartOfDay(z)),
+                    "days_away", h.date().toEpochDay() - today.toEpochDay(),
+                    "country", h.cc(),
+                    "country_name", Geo.countryName(h.cc()),
+                    "name", h.name(),
+                    "local_name", h.localName(),
+                    "national", h.national(),
+                    "regions", h.regions(),
+                    "types", h.types(),
+                    "starts_at", Json.time(h.date().atStartOfDay(z).withZoneSameInstant(refZone)),
+                    "ends_at", Json.time(h.date().plusDays(1).atStartOfDay(z).withZoneSameInstant(refZone))));
+        }
+        return Json.obj("period", Json.obj("type", span.name().toLowerCase(Locale.ROOT), "label", title(),
+                        "start", start.toString(), "end", end.toString()),
+                "reference", Json.obj("label", refLabel, "zone", refZone.getId()),
+                "complete", failed.isEmpty() && noData.isEmpty(),
+                "countries", countryRows,
+                "holidays", rows);
     }
 
     static String ellipsis(String s, int w) {

@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java
+//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java lib/Json.java
 //FILES data/cities.tsv=data/cities.tsv
 //FILES data/countries.tsv=data/countries.tsv
 //FILES data/landmask.txt=data/landmask.txt
@@ -71,6 +71,9 @@ public class TzNow implements Callable<Integer> {
     @Option(names = "--sort", description = "Row order: offset (default), config, name", defaultValue = "offset")
     String sort;
 
+    @Option(names = "--json", description = "Print the data as JSON (read-only: not with --watch, --add, --remove or --reset)")
+    boolean json;
+
     Config cfg;
     ZoneId local;
 
@@ -81,12 +84,24 @@ public class TzNow implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         if (noColor) Term.noColor = true;
+        if (json && (watch || reset || !add.isEmpty() || !remove.isEmpty())) {
+            Term.error("--json cannot be combined with --watch, --add, --remove or --reset");
+            return 2;
+        }
         cfg = Config.load();
         local = Config.localZone();
         h12 |= cfg.clock12;
 
         if (reset || !add.isEmpty() || !remove.isEmpty()) {
             if (!editConfig()) return 2;
+        }
+        if (showConfig && json) {
+            List<Object> configured = new ArrayList<>();
+            for (Config.Entry e : cfg.zones) configured.add(Json.obj("label", e.label(), "zone", e.zone().getId()));
+            Term.json(Json.obj("config_file", Config.file().toString(), "zones", configured,
+                    "work_hours", Json.obj("start", cfg.workStart, "end", cfg.workEnd),
+                    "clock", cfg.clock12 ? 12 : 24));
+            return 0;
         }
         if (showConfig) {
             Term.println("Config file: " + Config.file());
@@ -110,6 +125,10 @@ public class TzNow implements Callable<Integer> {
                 return 2;
             }
         }
+        if (json) {
+            Term.json(toJson(entries, instant));
+            return 0;
+        }
         if (watch) {
             Live.run(Duration.ofMillis(500), (area, buf) -> render(area, buf, entries, Instant.now(), true), k -> true);
             return 0;
@@ -118,6 +137,23 @@ public class TzNow implements Callable<Integer> {
         int width = Math.min(Term.width(), 120);
         Term.print(width, height(entries), (area, buf) -> render(area, buf, entries, when, false));
         return 0;
+    }
+
+    Object toJson(List<Config.Entry> entries, Instant at) {
+        ZonedDateTime here = at.atZone(local);
+        List<Object> rows = new ArrayList<>();
+        for (Config.Entry e : sorted(entries, at)) {
+            ZonedDateTime t = at.atZone(e.zone());
+            var row = Json.obj("label", e.label(), "is_local", e.zone().getId().equals(local.getId()));
+            row.putAll(Json.clock(e.zone(), at, here.getOffset()));
+            row.put("day_offset", t.toLocalDate().toEpochDay() - here.toLocalDate().toEpochDay());
+            row.put("period", Json.period(Ui.period(t.toLocalTime(), cfg.workStart, cfg.workEnd)));
+            rows.add(row);
+        }
+        return Json.obj("instant", at.truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString(),
+                "local", Json.clock(local, at, here.getOffset()),
+                "work_hours", Json.obj("start", cfg.workStart, "end", cfg.workEnd),
+                "zones", rows);
     }
 
     boolean editConfig() {
