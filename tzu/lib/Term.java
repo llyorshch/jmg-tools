@@ -93,6 +93,11 @@ final class Term {
         OUT.println(noColor ? stripAnsi(s) : s);
     }
 
+    /** Prints one JSON document on stdout, never altered by the colour settings. */
+    static void json(Object value) {
+        OUT.println(Json.write(value));
+    }
+
     static void error(String s) {
         System.err.println(s);
     }

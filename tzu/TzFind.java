@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java
+//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java lib/Json.java
 //FILES data/cities.tsv=data/cities.tsv
 //FILES data/countries.tsv=data/countries.tsv
 //FILES data/landmask.txt=data/landmask.txt
@@ -68,6 +68,9 @@ public class TzFind implements Callable<Integer> {
     @Option(names = "--no-color", description = "Disable colours (also honours NO_COLOR)")
     boolean noColor;
 
+    @Option(names = "--json", description = "Print the results as JSON, best match first (read-only: not with --add or --plain)")
+    boolean json;
+
     ZoneId local;
 
     public static void main(String... args) {
@@ -77,10 +80,15 @@ public class TzFind implements Callable<Integer> {
     @Override
     public Integer call() {
         if (noColor) Term.noColor = true;
+        if (json && (add || plain)) {
+            Term.error("--json cannot be combined with --add or --plain");
+            return 2;
+        }
         local = Config.localZone();
         String q = String.join(" ", query).trim();
         List<Geo.Place> results = new ArrayList<>(Geo.search(q, limit));
         boolean usedOnline = false;
+        String onlineError = null;
         if (!offline && (online || results.isEmpty())) {
             try {
                 List<Geo.Place> remote = geocode(q);
@@ -91,6 +99,7 @@ public class TzFind implements Callable<Integer> {
                 }
                 if (results.size() > limit) results = results.subList(0, limit);
             } catch (Exception e) {
+                onlineError = String.valueOf(e.getMessage());
                 if (results.isEmpty()) Term.error("Online lookup failed: " + e.getMessage());
             }
         }
@@ -104,6 +113,12 @@ public class TzFind implements Callable<Integer> {
             return 0;
         }
         Instant now = Instant.now();
+        if (json) {
+            List<Object> rows = new ArrayList<>();
+            for (Geo.Place p : results) rows.add(toJson(p, now));
+            Term.json(Json.obj("query", q, "online_used", usedOnline, "online_error", onlineError, "results", rows));
+            return 0;
+        }
         int width = Math.min(Term.width(), 130);
         int detailH = noMap ? 12 : Math.max(12, mapRows(width) + 2);
         int tableH = results.size() + 3;
@@ -125,6 +140,20 @@ public class TzFind implements Callable<Integer> {
             }
         }
         return 0;
+    }
+
+    Object toJson(Geo.Place p, Instant now) {
+        boolean hasRegion = p.region() != null && !p.region().isBlank();
+        var row = Json.obj("label", p.label(), "kind", p.kind(),
+                "region", hasRegion ? p.region() : null,
+                "country", p.cc().isEmpty() ? null : p.cc(),
+                "country_name", p.cc().isEmpty() ? null : Geo.countryName(p.cc()),
+                "latitude", p.lat(), "longitude", p.lon(),
+                "population", p.population() > 0 ? p.population() : null,
+                "long_name", Geo.longName(p.zone()));
+        row.putAll(Json.clock(p.zone(), now, now.atZone(local).getOffset()));
+        row.putAll(Dst.toJson(Dst.info(p.zone(), now)));
+        return row;
     }
 
     int mapRows(int width) {

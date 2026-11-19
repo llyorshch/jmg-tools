@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Runs tz-now from this plugin's sources. JBang compiles it on first use and caches the result.
+set -euo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if ! command -v jbang >/dev/null 2>&1; then
+  echo "tz-now: JBang is required but was not found on PATH. Install it from https://www.jbang.dev/download/" >&2
+  exit 127
+fi
+exec jbang --quiet run "$root/TzNow.java" "$@"

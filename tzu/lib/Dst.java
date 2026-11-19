@@ -52,6 +52,22 @@ final class Dst {
         return new Info(std, dst, observes, r.isDaylightSavings(at), starts, ends, upcoming ? next : null);
     }
 
+    /** The rules of a zone for the --json output; absent values are null. */
+    static java.util.Map<String, Object> toJson(Info d) {
+        ZoneOffsetTransition t = d.next();
+        return Json.obj("observes_dst", d.observes(),
+                "dst_active", d.active(),
+                "standard_offset", Json.offset(d.standard()),
+                "dst_offset", d.daylight() == null ? null : Json.offset(d.daylight()),
+                "dst_starts", "—".equals(d.starts()) ? null : d.starts(),
+                "dst_ends", "—".equals(d.ends()) ? null : d.ends(),
+                "next_change", t == null ? null : Json.obj(
+                        "at", t.getInstant().toString(),
+                        "local_before", t.getDateTimeBefore().toString(),
+                        "local_after", t.getDateTimeAfter().toString(),
+                        "change_minutes", (t.getOffsetAfter().getTotalSeconds() - t.getOffsetBefore().getTotalSeconds()) / 60));
+    }
+
     static String describe(ZoneOffsetTransitionRule tr) {
         String month = tr.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
         DayOfWeek dow = tr.getDayOfWeek();

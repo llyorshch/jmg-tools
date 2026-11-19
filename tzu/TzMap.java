@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java
+//SOURCES lib/Term.java lib/Config.java lib/Geo.java lib/Ui.java lib/Live.java lib/Dates.java lib/Dst.java lib/WorldMap.java lib/Net.java lib/Holidays.java lib/Json.java
 //FILES data/cities.tsv=data/cities.tsv
 //FILES data/countries.tsv=data/countries.tsv
 //FILES data/landmask.txt=data/landmask.txt
@@ -77,6 +77,9 @@ public class TzMap implements Callable<Integer> {
     @Option(names = "--no-color", description = "Disable colours (also honours NO_COLOR)")
     boolean noColor;
 
+    @Option(names = "--json", description = "Print the DST data as JSON, without the map (not with --interactive or --map-only)")
+    boolean json;
+
     List<Config.Entry> entries;
     ZoneId local;
     Instant instant;
@@ -89,6 +92,10 @@ public class TzMap implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         if (noColor) Term.noColor = true;
+        if (json && (interactive || mapOnly)) {
+            Term.error("--json cannot be combined with --interactive or --map-only");
+            return 2;
+        }
         Config cfg = Config.load();
         local = Config.localZone();
         try {
@@ -102,6 +109,10 @@ public class TzMap implements Callable<Integer> {
         } catch (Exception e) {
             Term.error(e instanceof IllegalArgumentException ? e.getMessage() : "Invalid --at value, expected yyyy-MM-dd[THH:mm]");
             return 2;
+        }
+        if (json) {
+            Term.json(allRules ? rulesJson() : zonesJson());
+            return 0;
         }
         if (interactive) {
             Live.run(Duration.ofSeconds(20), (area, buf) -> {
@@ -139,6 +150,51 @@ public class TzMap implements Callable<Integer> {
             }
         }
         return 0;
+    }
+
+    String instantText() {
+        return instant.truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString();
+    }
+
+    Object zonesJson() {
+        List<Config.Entry> sorted = new ArrayList<>(entries);
+        sorted.sort(Comparator.comparingInt(e -> e.zone().getRules().getOffset(instant).getTotalSeconds()));
+        List<Object> rows = new ArrayList<>();
+        for (Config.Entry e : sorted) {
+            var row = Json.obj("label", e.label(), "zone", e.zone().getId(),
+                    "is_local", e.zone().getId().equals(local.getId()),
+                    "utc_offset", Json.offset(e.zone().getRules().getOffset(instant)));
+            row.putAll(Dst.toJson(Dst.info(e.zone(), instant)));
+            rows.add(row);
+        }
+        return Json.obj("instant", instantText(), "zones", rows);
+    }
+
+    Object rulesJson() {
+        List<Object> sets = new ArrayList<>();
+        List<Object> noDst = new ArrayList<>();
+        for (Group g : ruleGroups()) {
+            List<Object> countries = new ArrayList<>();
+            for (String cc : g.countries()) countries.add(Json.obj("code", cc, "name", Geo.countryName(cc)));
+            if (g.signature().isEmpty()) {
+                noDst = countries;
+                continue;
+            }
+            String[] rule = startsAndEnds(g.signature());
+            sets.add(Json.obj("dst_starts", rule[0], "dst_ends", rule[1],
+                    "dst_active", Dst.info(g.sample(), instant).active(), "countries", countries));
+        }
+        return Json.obj("instant", instantText(), "rule_sets", sets, "countries_without_dst", noDst);
+    }
+
+    /** Splits a {@link Dst#signature} into its {start, end} rules; a missing rule is null. */
+    static String[] startsAndEnds(String signature) {
+        String[] rule = new String[2];
+        for (String part : signature.split("  ")) {
+            if (part.startsWith("▲")) rule[0] = part.substring(2);
+            else if (part.startsWith("▼")) rule[1] = part.substring(2);
+        }
+        return rule;
     }
 
     void shift(long seconds) {
@@ -319,10 +375,9 @@ public class TzMap implements Callable<Integer> {
             for (String cc : g.countries()) names.add(Geo.countryName(cc));
             String starts = "—", ends = "—";
             if (!g.signature().isEmpty()) {
-                for (String part : g.signature().split("  ")) {
-                    if (part.startsWith("▲")) starts = part.substring(2);
-                    else if (part.startsWith("▼")) ends = part.substring(2);
-                }
+                String[] rule = startsAndEnds(g.signature());
+                if (rule[0] != null) starts = rule[0];
+                if (rule[1] != null) ends = rule[1];
             }
             Dst.Info info = g.sample() == null ? null : Dst.info(g.sample(), instant);
             List<Line> lines = new ArrayList<>();

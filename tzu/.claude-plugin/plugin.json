@@ -1,0 +1,14 @@
+{
+  "name": "tzu",
+  "displayName": "tzu timezone utilities",
+  "version": "1.0.0",
+  "description": "Accurate world clocks, time conversion, meeting planning, public holidays, timezone lookup and daylight saving rules for Claude Code.",
+  "author": {
+    "name": "llyorshch",
+    "url": "https://github.com/llyorshch"
+  },
+  "homepage": "https://github.com/llyorshch/jmg-tools/tree/main/tzu",
+  "repository": "https://github.com/llyorshch/jmg-tools",
+  "license": "MIT",
+  "keywords": ["timezone", "time", "meetings", "holidays", "dst", "jbang"]
+}
